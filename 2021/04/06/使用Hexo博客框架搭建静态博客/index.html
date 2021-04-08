@@ -56,7 +56,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.9-a","typing":{"enable":true,"typeSpeed":90,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.9-a","typing":{"enable":true,"typeSpeed":90,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":false,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -304,7 +304,7 @@
 
 <p>来生成一个默认的新博客。</p>
 <p><strong>您可能会遇到以下错误：</strong></p>
-<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-0.png" srcset="/img/loading.gif" lazyload alt="错误报告"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-0.png" alt="错误报告"></p>
 <p>这是因为连接 GitHub 超时，您可以使用 VPN、更换网络或稍后再试。</p>
 <p><strong>当最后一行出现：</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">INFO Start blogging with Hexo!<br></code></pre></td></tr></table></figure>
@@ -314,10 +314,10 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo s<br></code></pre></td></tr></table></figure>
 
 <p>即可启动本地博客，默认地址一般为：<a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a> 。您可在启动后展示的信息中找到此地址（黄色部分）：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-1.png" srcset="/img/loading.gif" lazyload alt="localhost"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-1.png" alt="localhost"></p>
 <p>该端口可能会被占用，此时修改默认启用的端口即可。</p>
 <p>随后打开浏览器，输入该地址，您便会看到一个默认的博客页面：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-2.png" srcset="/img/loading.gif" lazyload alt="默认界面"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-2.png" alt="默认界面"></p>
 <p>至此，博客便已搭建成功。</p>
 <h4 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h4><p>在<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/"> Hexo 官方文档 </a>中的Hexo概述中有这么一段话：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">安装 Hexo<br>所有必备的应用程序安装完成后，即可使用 npm 安装 Hexo。<br>$ npm install -g hexo-cli<br><br>进阶安装和使用<br>对于熟悉 npm 的进阶用户，可以仅局部安装 hexo 包。<br>$ npm install hexo<br></code></pre></td></tr></table></figure>
@@ -333,17 +333,17 @@
 <p>的时候，hexo-cli 会自动从 GitHub 中下载 hexo 到博客文件夹的 node_modules 目录下。</p>
 <p>此外，上述流程中的 hexo 相关命令都是由于 hexo-cli 进行了封装，才能使用。</p>
 <h2 id="4-使用Fluid主题美化博客"><a href="#4-使用Fluid主题美化博客" class="headerlink" title="4. 使用Fluid主题美化博客"></a>4. 使用Fluid主题美化博客</h2><p>完成此步骤，您将获得一个搭载了默认 Fluid 主题的静态博客。</p>
-<p><img src="https://camo.githubusercontent.com/48b250de82787ee8090df0e3a3088e10d09a12b58fe1df55045f2476aca20978/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f666c7569642d6465762f737461746963406d61737465722f6865786f2d7468656d652d666c7569642f73637265656e73686f74732f696e6465782e706e67" srcset="/img/loading.gif" lazyload alt="Fluid主题预览"></p>
+<p><img src="https://camo.githubusercontent.com/48b250de82787ee8090df0e3a3088e10d09a12b58fe1df55045f2476aca20978/68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f666c7569642d6465762f737461746963406d61737465722f6865786f2d7468656d652d666c7569642f73637265656e73686f74732f696e6465782e706e67" alt="Fluid主题预览"></p>
 <p>该主题有详尽的中文用户手册，可自行进入 <a target="_blank" rel="noopener" href="https://hexo.fluid-dev.com/docs/">Hexo Fluid 用户手册</a> 来添加该主题，以下仅提供一些注意事项。</p>
 <h4 id="4-1-注意事项"><a href="#4-1-注意事项" class="headerlink" title="4.1. 注意事项"></a>4.1. 注意事项</h4><p>进入 博客文件夹\node_modules\hexo 路径中，打开 package.json 文件，便可查看hexo的版本：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-3.png" srcset="/img/loading.gif" lazyload alt="hexo版本"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-3.png" alt="hexo版本"></p>
 <p>在此文章发布时，该hexo版本是大于 5.0 的。因此在获取 Fluid 主题的最新版本时，推荐按照 Fluid 用户手册中的方法一来获取最新版本，不然可能在安装主题后执行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo s<br></code></pre></td></tr></table></figure>
 
 <p>时，Fluid 主题会产生一个警告，按照方法一安装，则完美运行。</p>
 <h2 id="5-将博客发布至-GitHub"><a href="#5-将博客发布至-GitHub" class="headerlink" title="5.将博客发布至 GitHub"></a>5.将博客发布至 GitHub</h2><p>完成此步骤，将会把个人博客部署至GitHub，实现在线浏览。</p>
 <h3 id="5-1-在GitHub新建仓库"><a href="#5-1-在GitHub新建仓库" class="headerlink" title="5.1. 在GitHub新建仓库"></a>5.1. 在GitHub新建仓库</h3><p>在浏览器打开GitHub，登录后创建一个新仓库（Repository）：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-4.png" srcset="/img/loading.gif" lazyload alt="新仓库"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-4.png" alt="新仓库"></p>
 <p>注意，仓库名必须要以你的用户名为开头，后跟 .github.io 。</p>
 <p>最后滑到最下方点击 New Repository，则仓库创建成功。</p>
 <h3 id="5-2-在博客目录下安装Git部署依赖"><a href="#5-2-在博客目录下安装Git部署依赖" class="headerlink" title="5.2. 在博客目录下安装Git部署依赖"></a>5.2. 在博客目录下安装Git部署依赖</h3><p>打开命令行，输入：</p>
@@ -355,9 +355,9 @@
 
 <p>来安装 Hexo 的 Git 部署工具。</p>
 <h3 id="5-3-编辑博客目录下的-config-yml-文件"><a href="#5-3-编辑博客目录下的-config-yml-文件" class="headerlink" title="5.3. 编辑博客目录下的 _config.yml 文件"></a>5.3. 编辑博客目录下的 _config.yml 文件</h3><p>打开博客主目录下的 _config.yml 文件，找到 deploy 属性，进行如下图编辑：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-5.png" srcset="/img/loading.gif" lazyload alt="config文件编辑"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-5.png" alt="config文件编辑"></p>
 <p>其中，repo 处填写创建项目的地址：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-6.png" srcset="/img/loading.gif" lazyload alt="地址"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog0-6.png" alt="地址"></p>
 <p>编辑完成后，保存并关闭。</p>
 <h3 id="5-4-将博客部署至GitHub"><a href="#5-4-将博客部署至GitHub" class="headerlink" title="5.4. 将博客部署至GitHub"></a>5.4. 将博客部署至GitHub</h3><p>打开命令行工具，移动到博客目录，输入：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo d<br></code></pre></td></tr></table></figure>
@@ -405,7 +405,7 @@
 
             
               <!-- Comments -->
-              <article class="comments" id="comments" lazyload>
+              <article class="comments" id="comments">
                 
                   
                 
@@ -425,7 +425,7 @@
       var s = document.createElement('script');
       s.setAttribute('src', 'https://utteranc.es/client.js');
       s.setAttribute('repo', 'RoOtZwY/RoOtZwY.github.io');
-      s.setAttribute('issue-term', 'Comments');
+      s.setAttribute('issue-term', 'pathname');
       
       s.setAttribute('label', 'utterances');
       
@@ -527,10 +527,6 @@
 
 <!-- Plugins -->
 
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
 
 
 
