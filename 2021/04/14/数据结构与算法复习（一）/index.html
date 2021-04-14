@@ -1,0 +1,531 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="通过数据结构与算法相关课程、书籍和LeetCode，来进行数据结构与算法复习。">
+  <meta name="author" content="ZwY">
+  <meta name="keywords" content="ZwY">
+  
+  <title>数据结构与算法复习（一） - ZwY的个人博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.9-a","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>ZwY's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="数据结构与算法复习（一）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-04-14 21:51" pubdate>
+        2021年4月14日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      23
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">数据结构与算法复习（一）</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2021年4月14日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p>通过数据结构与算法相关课程、书籍和LeetCode，来进行数据结构与算法复习。</p>
+<span id="more"></span>
+
+<p>本篇文章用于简要梳理在数据结构与算法复习过程中的一些重要知识点和难点，其中一些比较基础且在书中提及的知识点会忽略，因此并不适合仅仅通过阅读此文章来完成数据结构与算法的学习或复习，而是搭配以下资源进行阅读：</p>
+<p><a target="_blank" rel="noopener" href="https://dsa.cs.tsinghua.edu.cn/~deng/ds/index.htm">数据结构（邓俊辉）</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/">LeetCode</a></p>
+<h1 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h1><p><strong>To measure is to know. If you can not measure it, you can not improve it.</strong></p>
+<p>本部分通过引入理想、统一、分层次的尺度标准，来衡量算法的性能。</p>
+<h2 id="大O记号"><a href="#大O记号" class="headerlink" title="大O记号"></a>大O记号</h2><p>大O记号通过划分上界，来悲观地衡量一个算法的性能。</p>
+<p>注意：O(f(n)) 并不一定会完全处于 T(n) 之上，但可以通过如图中对 f(n) 乘以常系数 c 来做到拉高上界的作用。</p>
+<p>![大O记号](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-0.png)</p>
+<h2 id="其它记号"><a href="#其它记号" class="headerlink" title="其它记号"></a>其它记号</h2><p>![其他记号](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-1.png)</p>
+<h2 id="大O记号的刻度"><a href="#大O记号的刻度" class="headerlink" title="大O记号的刻度"></a>大O记号的刻度</h2><p><strong>常数复杂度 O( 1 )</strong></p>
+<p>算法不含随输入规模变换的转向（循环、调用、递归等），且顺序执行，则说这个算法的复杂度为 O(1)。</p>
+<p><strong>对数复杂度 O( log^c(n) )</strong></p>
+<p>在此种情况中，对数的底数常常会被忽略，因为往往可以通过数学变换来改变对数的底数。</p>
+<p>![底数变换](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-2.png)</p>
+<p>这类算法非常高效，复杂度无限接近于常数。</p>
+<p><strong>多项式复杂度 O( n^c )</strong></p>
+<p>此种复杂度由于影响因素往往取决于最高次幂项，因此较低次幂的项往往忽略不计。</p>
+<p>![多项式复杂度](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-3.png)</p>
+<p>其中，当幂次 c == 1 时，表示算法的时间复杂度与 n 线性相关，因此称 O(n) 为线性复杂度。</p>
+<p><strong>指数复杂度 O( 2^n )</strong></p>
+<p>当一个算法的计算成本按指数增长时，往往我们认为此种算法为问题的难解。</p>
+<p>![指数复杂度](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-4.png)</p>
+<p>我们可以从下图中观察各个复杂度的增长速度：</p>
+<p>![复杂度的增长速度](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-5.png)</p>
+<h2 id="级数"><a href="#级数" class="headerlink" title="级数"></a>级数</h2><p>以下图片总结了一些常见的级数。</p>
+<p>![级数1](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-6.png)</p>
+<p>![级数2](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-7.png)</p>
+<h2 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h2><p>课程通过冒泡排序来描述一个算法的可行性以及算法的好坏对计算效率的影响，此处将简要描述冒泡排序。</p>
+<p>![冒泡排序](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-8.png)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 冒泡排序</span><br><span class="hljs-comment"> */</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BubbleSort</span> </span>&#123;<br><br>    <span class="hljs-comment">// 课程演示中冒泡排序的写法，因增加了反转判断，平均效率更高</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">bubbleSort1</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;<br>        <span class="hljs-keyword">int</span> n = nums.length;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">boolean</span> sorted = <span class="hljs-keyword">false</span>; sorted = !sorted; n--) &#123; <span class="hljs-comment">// 每次遍历数组后对sorted进行反转来查看是否排序完成</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) &#123;<br>                <span class="hljs-keyword">if</span> (nums[i] &lt; nums[i - <span class="hljs-number">1</span>]) &#123;<br>                    <span class="hljs-keyword">int</span> temp = nums[i];<br>                    nums[i] = nums[i - <span class="hljs-number">1</span>];<br>                    nums[i - <span class="hljs-number">1</span>] = temp;<br>                    sorted = <span class="hljs-keyword">false</span>; <span class="hljs-comment">// 如果数组中仍有反转，说明排序未完成</span><br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// 常规冒泡排序写法，效率较低</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">bubbleSort2</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;<br>        <span class="hljs-keyword">int</span> n = nums.length;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) &#123;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt; n - i; j++) &#123;<br>                <span class="hljs-keyword">if</span> (nums[j - <span class="hljs-number">1</span>] &gt; nums[j]) &#123;<br>                    <span class="hljs-keyword">int</span> temp = nums[j];<br>                    nums[j] = nums[j - <span class="hljs-number">1</span>];<br>                    nums[j - <span class="hljs-number">1</span>] = temp;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h1 id="迭代与递归"><a href="#迭代与递归" class="headerlink" title="迭代与递归"></a>迭代与递归</h1><p>本部分通过<strong>简要</strong>介绍减治法、分治法和动态规划，来体现迭代和递归。</p>
+<p>注意：此部分不会详细讲述上述三种算法。</p>
+<h2 id="减治法"><a href="#减治法" class="headerlink" title="减治法"></a>减治法</h2><p>通过将一个大规模的问题分解为两个子问题，<strong>将其中一个子问题解决</strong>，此后递归减治另一子问题，由子问题的解得到原问题的解。</p>
+<p>![减治法](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-9.png)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 求和、数组翻转</span><br><span class="hljs-comment"> */</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Test</span> </span>&#123;<br>    <br>    <span class="hljs-comment">// 减治法递归求和</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">sum</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> n)</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> n &gt; <span class="hljs-number">1</span> ? sum(nums, n - <span class="hljs-number">1</span>) + nums[n - <span class="hljs-number">1</span>] : nums[n - <span class="hljs-number">1</span>];<br>    &#125;<br>    <br>    <span class="hljs-comment">// 减治法递归翻转数组</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">reverse</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> begin, <span class="hljs-keyword">int</span> end)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (begin &lt; end) &#123;<br>            <span class="hljs-keyword">int</span> temp = nums[begin];<br>            nums[begin] = nums[end];<br>            nums[end] = temp;<br>            reverse(nums, begin + <span class="hljs-number">1</span>, end - <span class="hljs-number">1</span>);<br>        &#125;<br>    &#125;<br>    <br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="分治法"><a href="#分治法" class="headerlink" title="分治法"></a>分治法</h2><p>通过将一个大规模的问题分解为两个子问题，并不断分解其子问题，直到最新的子问题得到解决后，依次得到原问题的解。</p>
+<p>![分治法](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-10.png)</p>
+<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><p>自底向上，通过先求出子问题来推出原问题的解。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 斐波那契数列</span><br><span class="hljs-comment"> */</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FB</span> </span>&#123;<br>    <br>    <span class="hljs-comment">// 分治 O(2^n)</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">fib</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>&#123;<br>        <span class="hljs-keyword">return</span> n &gt; <span class="hljs-number">1</span> ? fib(n - <span class="hljs-number">1</span>) + fib(n - <span class="hljs-number">2</span>) : n;<br>    &#125;<br>    <br>    <span class="hljs-comment">// 动态规划 O(n)</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">fib</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">int</span> f = <span class="hljs-number">0</span>; <span class="hljs-comment">// fib(0)</span><br>        <span class="hljs-keyword">int</span> g = <span class="hljs-number">1</span>; <span class="hljs-comment">// fib(1)</span><br>        <span class="hljs-keyword">while</span> (n-- &gt; <span class="hljs-number">1</span>) &#123;<br>            g = g + f;<br>            f = g - f;<br>        &#125;<br>        <span class="hljs-keyword">return</span> g;<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="动态规划典型例题：最长公共子序列"><a href="#动态规划典型例题：最长公共子序列" class="headerlink" title="动态规划典型例题：最长公共子序列"></a>动态规划典型例题：最长公共子序列</h3><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/longest-common-subsequence/">LeetCode：最长公共子序列</a></p>
+<p>此处介绍了两种求得最长公共子序列的方法：分治法和动态规划。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 最长公共子序列</span><br><span class="hljs-comment"> */</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LCS</span> </span>&#123;<br><br>    <span class="hljs-comment">// 分治法递归 O(2^n)</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">lcs1</span><span class="hljs-params">(String s1, String s2, <span class="hljs-keyword">int</span> l1, <span class="hljs-keyword">int</span> l2)</span> </span>&#123;<br>        <span class="hljs-keyword">if</span> (l1 == <span class="hljs-number">0</span> || l2 == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// 递归基</span><br>        <span class="hljs-keyword">if</span> (s1.charAt(l1 - <span class="hljs-number">1</span>) == s2.charAt(l2 - <span class="hljs-number">1</span>)) &#123; <span class="hljs-comment">// 如果判断此处字符串相同，同时除去两个字符，结果 + 1</span><br>            <span class="hljs-keyword">return</span> lcs1(s1, s2, l1 - <span class="hljs-number">1</span>, l2 - <span class="hljs-number">1</span>) + <span class="hljs-number">1</span>;<br>        &#125;<br>        <span class="hljs-comment">// 如果此处字符串不相等，分两个方向寻找子序列</span><br>        <span class="hljs-keyword">int</span> result1 = lcs1(s1, s2, l1 - <span class="hljs-number">1</span>, l2);<br>        <span class="hljs-keyword">int</span> result2 = lcs1(s1, s2, l1, l2 - <span class="hljs-number">1</span>);<br><br>        <span class="hljs-comment">// 返回两个结果中比较大的值</span><br>        <span class="hljs-keyword">return</span> Math.max(result1, result2);<br>    &#125;<br><br>    <span class="hljs-comment">// 动态规划 O(s1.length * s2.length)</span><br>    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">lcs2</span><span class="hljs-params">(String s1, String s2)</span> </span>&#123;<br>        <span class="hljs-comment">// 创建一个dp表，用于记录动态规划过程中产生的中间结果，length + 1 确保每个数据位都可以进行取值操作</span><br>        <span class="hljs-keyword">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[s1.length() + <span class="hljs-number">1</span>][s2.length() + <span class="hljs-number">1</span>];<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; dp.length; i++) &#123;<br>            <span class="hljs-keyword">char</span> c1 = s1.charAt(i);<br>            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt; dp[i].length; j++) &#123;<br>                <span class="hljs-keyword">char</span> c2 = s2.charAt(i);<br>                <span class="hljs-keyword">if</span> (c1 == c2) &#123;<br>                    <span class="hljs-comment">// 如果相等，取左上角的值并且 + 1，因为左上角的值一定是最长公共子序列的组成部分。</span><br>                    dp[i][j] = dp[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>;<br>                &#125; <span class="hljs-keyword">else</span> &#123;<br>                    <span class="hljs-comment">// 如果不相等，取左和上中较大的值作为结果</span><br>                    dp[i][j] = Math.max(dp[i - <span class="hljs-number">1</span>][j], dp[i][j - <span class="hljs-number">1</span>]);<br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-comment">// 返回最终结果</span><br>        <span class="hljs-keyword">return</span> dp[s1.length()][s2.length()];<br>    &#125;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>![最长公共子序列原理](C:\Users\96129\OneDrive\Markdown Files\Blog\img\blog1\blog1-11.png)</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E5%A4%8D%E4%B9%A0/">数据结构与算法复习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%AE%97%E6%B3%95/">算法</a>
+                    
+                  </div>
+                
+              </div>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/04/06/%E4%BD%BF%E7%94%A8Hexo%E5%8D%9A%E5%AE%A2%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">
+                        <span class="hidden-mobile">使用Hexo博客框架搭建静态博客</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.lazyComments('comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'RoOtZwY/RoOtZwY.github.io');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
