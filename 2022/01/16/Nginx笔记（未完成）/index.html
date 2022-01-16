@@ -1,0 +1,774 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="本文主要整理 Nginx 学习中的一些重要知识点。
+本文中测试环境部分为 Nginx 官方 Docker 镜像，Nginx 版本：1.20.5">
+  <meta name="author" content="ZwY">
+  <meta name="keywords" content="ZwY">
+  
+  <title>Nginx笔记（未完成） - ZwY的个人博客</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.9-a","typing":{"enable":true,"typeSpeed":60,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>ZwY's Blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Nginx笔记（未完成）">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-01-16 23:59" pubdate>
+        2022年1月16日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      27
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Nginx笔记（未完成）</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年1月17日 凌晨
+                
+              </p>
+            
+            <div class="markdown-body">
+              <p>本文主要整理 Nginx 学习中的一些重要知识点。</p>
+<p>本文中测试环境部分为 Nginx 官方 Docker 镜像，Nginx 版本：1.20.5</p>
+<span id="more"></span>
+
+<h2 id="Nginx-容器相关"><a href="#Nginx-容器相关" class="headerlink" title="Nginx 容器相关"></a>Nginx 容器相关</h2><h3 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h3><h4 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h4><div class="code-wrapper"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> nginx:stable
+
+<span class="hljs-keyword">VOLUME</span><span class="bash"> [ <span class="hljs-string">&quot;/var/log/error.log&quot;</span>, <span class="hljs-string">&quot;/var/run/&quot;</span>, <span class="hljs-string">&quot;/etc/nginx&quot;</span>, <span class="hljs-string">&quot;/usr/share/nginx&quot;</span>]</span>
+
+<span class="hljs-keyword">COPY</span><span class="bash"> ./application.conf /etc/nginx/conf.d/</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> ./nginx.conf /etc/nginx/nginx.conf</span></code></pre></div>
+
+<h4 id="nginx-conf"><a href="#nginx-conf" class="headerlink" title="nginx.conf"></a>nginx.conf</h4><div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">user</span>  nginx;
+<span class="hljs-attribute">worker_processes</span>  auto;
+
+<span class="hljs-attribute">error_log</span>  /var/log/nginx/error.log <span class="hljs-literal">notice</span>;
+<span class="hljs-attribute">pid</span>        /var/run/nginx.pid;
+
+
+<span class="hljs-section">events</span> &#123;
+    <span class="hljs-attribute">worker_connections</span>  <span class="hljs-number">1024</span>;
+&#125;
+
+
+<span class="hljs-section">http</span> &#123;
+    <span class="hljs-attribute">include</span>       /etc/nginx/mime.types;
+    <span class="hljs-attribute">default_type</span>  application/octet-stream;
+
+    <span class="hljs-attribute">log_format</span>  main  <span class="hljs-string">&#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span>
+                      <span class="hljs-string">&#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span>
+                      <span class="hljs-string">&#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;</span>;
+
+    <span class="hljs-attribute">access_log</span>  /var/log/nginx/access.log  main;
+
+    <span class="hljs-attribute">sendfile</span>        <span class="hljs-literal">on</span>;
+    <span class="hljs-comment">#tcp_nopush     on;</span>
+
+    <span class="hljs-attribute">keepalive_timeout</span>  <span class="hljs-number">65</span>;
+
+    <span class="hljs-comment">#gzip  on;</span>
+  
+  
+    <span class="hljs-attribute">include</span> /etc/nginx/conf.d/application.conf;
+&#125;
+</code></pre></div>
+
+<h4 id="application-conf"><a href="#application-conf" class="headerlink" title="application.conf"></a>application.conf</h4><p>用于连接远程服务器的 Application Server</p>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">upstream</span> application &#123;
+    <span class="hljs-attribute">server</span> ip:port;
+    <span class="hljs-attribute">keepalive</span> <span class="hljs-number">32</span>;
+    <span class="hljs-attribute">keepalive_requests</span> <span class="hljs-number">100</span>;
+    <span class="hljs-attribute">keepalive_timeout</span> <span class="hljs-number">60s</span>;
+&#125;
+
+<span class="hljs-section">server</span> &#123;
+    <span class="hljs-attribute">listen</span> *:<span class="hljs-number">80</span>;
+    <span class="hljs-attribute">server_name</span> localhost;
+
+    <span class="hljs-attribute">location</span> / &#123;
+        <span class="hljs-attribute">proxy_pass</span> http://application/;
+    &#125;
+&#125;</code></pre></div>
+
+<h4 id="Docker-CMD"><a href="#Docker-CMD" class="headerlink" title="Docker CMD"></a>Docker CMD</h4><div class="code-wrapper"><pre><code class="hljs bash">docker build -t nginx:self .
+
+docker run --name nginx_self -p 80:80 -d nginx:self</code></pre></div>
+
+<h3 id="使用命令查看-Nginx-相关路径"><a href="#使用命令查看-Nginx-相关路径" class="headerlink" title="使用命令查看 Nginx 相关路径"></a>使用命令查看 Nginx 相关路径</h3><div class="code-wrapper"><pre><code class="hljs bash">nginx -h</code></pre></div>
+
+<h2 id="Beginner’s-Guide"><a href="#Beginner’s-Guide" class="headerlink" title="Beginner’s Guide"></a><a target="_blank" rel="noopener" href="https://nginx.org/en/docs/beginners_guide.html">Beginner’s Guide</a></h2><p>nginx has one master process and several worker processes. The main purpose of the master process is to read and evaluate configuration, and maintain worker processes.</p>
+<p>Nginx 拥有一个主进程和一些工作进程，主进程的作用主要是读取并校验配置文件，并维护工作进程。</p>
+<p>nginx employs event-based model and OS-dependent mechanisms to efficiently distribute requests among worker processes.</p>
+<p>Nginx 采用基于事件的模型，并且依赖操作系统的机制来有效地在工作进程间分配请求。</p>
+<p>To start nginx, run the executable file. Once nginx is started, it can be controlled by invoking the executable with the <code>-s</code> parameter. Use the following syntax:</p>
+<div class="code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># -s means -singal</span>
+nginx -s signal</code></pre></div>
+
+<p>Where <em>signal</em> may be one of the following:</p>
+<ul>
+<li><p><code>stop</code> — fast shutdown</p>
+<p>快速关闭</p>
+</li>
+<li><p><code>quit</code> — graceful shutdown</p>
+<p>等待工作进程处理完毕之后关闭</p>
+</li>
+<li><p><code>reload</code> — reloading the configuration file</p>
+<p>重新加载配置文件，当主进程导入配置文件并且成功，Nginx 会重新启动新的工作进程，并发送信息给旧的工作进程，让他们完成任务后 shut down，期间，旧的工作进程不会接受新的请求。如果失败则回滚，使用原来的工作进程。</p>
+</li>
+<li><p><code>reopen</code> — reopening the log files</p>
+</li>
+</ul>
+<p>For getting the list of all running nginx processes, the <code>ps</code> utility may be used, for example, in the following way:</p>
+<div class="code-wrapper"><pre><code class="hljs bash"><span class="hljs-comment"># invalid in container</span>
+ps -ax | grep nginx</code></pre></div>
+
+
+
+<h2 id="nginx-conf-1"><a href="#nginx-conf-1" class="headerlink" title="nginx.conf"></a>nginx.conf</h2><h3 id="main"><a href="#main" class="headerlink" title="main"></a>main</h3><div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-comment"># 如果主进程使用root运行，那么nginx 将会调用 setuid()/setgid() 去设置 user/group。</span>
+<span class="hljs-comment"># 如果 group 没有特别指定，那么 nginx 会使用 user 相同的名称设置 group。</span>
+<span class="hljs-comment"># 默认为 nobody nogroup 或者安装nginx的时候在 ./configure 指定的 --user=USER 和 --group=GROUP</span>
+<span class="hljs-attribute">user</span> nginx;
+
+<span class="hljs-attribute">pid</span> /run/nginx.pid;
+
+<span class="hljs-comment"># 指定异常退出后生层 core 文件 大小 位置</span>
+<span class="hljs-comment"># worker_rlimit_core 50M;</span>
+<span class="hljs-comment"># worker_directory /etc/nginx/temp</span>
+
+<span class="hljs-comment"># 指定 Nginx 的工作进程个数（可用auto）</span>
+<span class="hljs-attribute">worker_processes</span> <span class="hljs-number">2</span>;
+
+<span class="hljs-comment"># 指定 worker 子进程最大句柄数，linux 默认最大句柄数为 65535</span>
+<span class="hljs-attribute">worker_rlimit_nofile</span> <span class="hljs-number">1024</span>;
+
+<span class="hljs-comment"># 绑定 Nginx 工作进程到某个 CPU</span>
+<span class="hljs-comment"># 好处：减少进程在不同CPU间上下文切换所浪费的资源，充分利用 CPU 缓存</span>
+<span class="hljs-comment"># 注意：此处意思并不是完全避免进程上下文切换</span>
+<span class="hljs-comment"># 两个物理核心，两个 worker 进程，诸如以下示例</span>
+<span class="hljs-attribute">worker_cpu_affinity</span> <span class="hljs-number">01</span> <span class="hljs-number">10</span>;
+<span class="hljs-comment"># 两个物理核心，四个 worker 进程</span>
+<span class="hljs-comment"># 意思就是第一三个进程用一个核心，二四进程用另一个核心</span>
+<span class="hljs-comment"># worker_cpu_affinity 01 10 01 10</span>
+
+<span class="hljs-comment"># 指定工作进程 nice 值，调整 nginx 进程优先级，通常设定为负值，以优先调用nginx</span>
+<span class="hljs-comment"># linux 默认优先级为 120，值越小越优先，nice 设定范围 -20 ～ 19</span>
+<span class="hljs-comment"># priority = 120 + nice</span>
+<span class="hljs-attribute">worker_priority</span> -<span class="hljs-number">10</span>;
+
+<span class="hljs-comment"># 指定 worker 进程优雅退出的超时时间</span>
+<span class="hljs-comment"># worker_shutdown_timeout 5s;</span>
+
+<span class="hljs-comment"># 指定 worker 子进程内部调用内核态计时器的时间，调整时间间隔越大，系统调用越少，有利于性能提升</span>
+<span class="hljs-attribute">timer_resolution</span> <span class="hljs-number">100ms</span>;
+
+<span class="hljs-comment"># 开启守护进程</span>
+<span class="hljs-attribute">daemon</span> <span class="hljs-literal">on</span>;
+
+<span class="hljs-comment"># 负载均衡锁文件默认配置</span>
+<span class="hljs-comment"># lock_file logs/nginx.lock;</span></code></pre></div>
+
+<h4 id="补充知识"><a href="#补充知识" class="headerlink" title="补充知识"></a>补充知识</h4><p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog7-0.png" srcset="/img/loading.gif" lazyload alt="客户端请求流程"></p>
+<p>用户向服务器发起请求，网卡接收到请求，内核态通过 TCP/IP 解析 IP 和端口，找到对应监听这个 IP 和端口的程序，程序进程进行处理。过程中，程序会获取内核态的一些信息，比如计时器等，由于工作进程在用户态，因此内核态和用户态的切换会消耗资源。</p>
+<h3 id="events"><a href="#events" class="headerlink" title="events"></a>events</h3><div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-section">events</span> &#123;
+  <span class="hljs-comment"># 使用 linux 的io复用模型</span>
+  <span class="hljs-comment"># 推荐默认</span>
+  <span class="hljs-comment"># use epoll;</span>
+  
+  <span class="hljs-comment"># 每个 worker 子进程的最大连接数</span>
+  <span class="hljs-comment"># 推荐 65535 / worker_processes || 65535</span>
+  <span class="hljs-comment"># 注意，上面定义了worker进程的句柄数，不要超过</span>
+  <span class="hljs-attribute">worker_connections</span> <span class="hljs-number">1024</span>;
+  
+  <span class="hljs-comment"># 开启负载均衡锁</span>
+  <span class="hljs-comment"># 当关闭时，master 给所有 worker 都发一次信号，唤醒所有 worker 来争抢这个请求</span>
+  <span class="hljs-comment"># 打开时，相当于让 worker 串行获取请求的锁，其它进程就获取不到这个请求了</span>
+  <span class="hljs-comment"># 推荐打开</span>
+  <span class="hljs-attribute">accept_mutex</span> <span class="hljs-literal">on</span>;
+  
+  <span class="hljs-comment"># 如果负载均衡给一个 worker，但超时指定时间不响应，master 就分发给其他 worker</span>
+  <span class="hljs-attribute">accept_mutex_delay</span> <span class="hljs-number">200ms</span>;
+  
+  <span class="hljs-comment"># 让 worker 子进程在同一时刻接收多个请求</span>
+  <span class="hljs-attribute">multi_accept</span> <span class="hljs-literal">on</span>;
+  
+&#125;</code></pre></div>
+
+<h4 id="补充知识-1"><a href="#补充知识-1" class="headerlink" title="补充知识"></a>补充知识</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/adams_wu/article/details/51669203">accept_mutex 详解</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wteruiycbqqvwt/article/details/90299610">IO复用技术</a></p>
+<h3 id="http"><a href="#http" class="headerlink" title="http"></a>http</h3><div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-section">http</span> &#123;
+  <span class="hljs-section">server</span> &#123;
+    <span class="hljs-attribute">listen</span> <span class="hljs-number">80</span>;
+    <span class="hljs-comment"># 注意。其中的 server_name 的选择是根据请求头中的 host （或者https中的:authority）字段来判断</span>
+    <span class="hljs-attribute">server_name</span> www.rootzwy.com;
+    <span class="hljs-attribute">root</span> html/domain_vm1;
+    <span class="hljs-attribute">location</span> / &#123;
+      <span class="hljs-attribute">index</span> index.html;
+    &#125;
+  &#125;
+&#125;</code></pre></div>
+
+<h4 id="补充知识-2"><a href="#补充知识-2" class="headerlink" title="补充知识"></a>补充知识</h4><p>root 和 alias 的区别：root 作用域比 alias 大，且 root 在寻找磁盘文件时会在后面加上 location 后的路径，而 alias 不会。</p>
+<h3 id="location"><a href="#location" class="headerlink" title="location"></a>location</h3><table>
+<thead>
+<tr>
+<th>匹配规则</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>=</td>
+<td>精确匹配，匹配优先级最高</td>
+<td>location = /images/ {}</td>
+</tr>
+<tr>
+<td>~</td>
+<td>区分大小写正则匹配，优先级第三高</td>
+<td>location ~ \.(jpg|gif)$ {}</td>
+</tr>
+<tr>
+<td>~*</td>
+<td>不区分大小写正则匹配，优先级第四高</td>
+<td>location ~* \.(jpg|gif)$ {}</td>
+</tr>
+<tr>
+<td>^~</td>
+<td>匹配到停止搜索，比如：/images?id=11&amp;name=11，优先级第二高</td>
+<td>location ^~ /images/ {}</td>
+</tr>
+<tr>
+<td>不带符号</td>
+<td></td>
+<td>location / {}</td>
+</tr>
+</tbody></table>
+<h4 id="补充知识-3"><a href="#补充知识-3" class="headerlink" title="补充知识"></a>补充知识</h4><p>location 中带不带斜杠的区别</p>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-section">http</span> &#123;
+  <span class="hljs-attribute">root</span> html;
+  <span class="hljs-section">server</span> &#123;
+    <span class="hljs-comment"># 按照目录匹配，如果不存在，也不会按照文件匹配</span>
+    <span class="hljs-attribute">location</span> /img/ &#123;
+      
+    &#125;
+	&#125;
+  <span class="hljs-section">server</span> &#123;
+    <span class="hljs-comment"># 首先按目录进行匹配，如果匹配失败，将img按文件匹配</span>
+    <span class="hljs-attribute">location</span> /img &#123;
+      
+    &#125;
+  &#125;
+&#125;</code></pre></div>
+
+
+
+<h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><p><img src="https://cdn.jsdelivr.net/gh/RoOtZwY/github-img/img/blog7-1.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>反向代理在生产环境中是很常用的实现负载均衡的一个手段，也是处理动态请求的常用方法。</p>
+<h3 id="反向代理优势"><a href="#反向代理优势" class="headerlink" title="反向代理优势"></a>反向代理优势</h3><p>隐藏真实服务器，实现 Application 的封装。</p>
+<p>便于横向拓展后端动态服务。</p>
+<p>动静分离，提升系统健壮性。</p>
+<h3 id="动静分离"><a href="#动静分离" class="headerlink" title="动静分离"></a>动静分离</h3><p>指的是静态资源请求直接由 nginx 服务器返回，动态请求则按一定的策略分发给反向代理的 Application Server，Application Server 处理完请求后，发送给 nginx ，nginx 再将请求回传给用户。</p>
+<p>除此之外，反向代理的好处就是实现 Application Server、Nginx（HTTP Server）、Client 之间传输协议的解耦，用户可以用 http 请求访问 nginx ，而 nginx 可以用 grpc 等其他协议与 Application Server 交互。</p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><p>在 conf.d 目录下创建 app_server，创建一个简易的应用服务器（此处可以替换为Application Server）</p>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-section">server</span> &#123;
+    <span class="hljs-attribute">listen</span> <span class="hljs-number">8080</span>;
+    <span class="hljs-attribute">server_name</span> localhost;
+   
+    <span class="hljs-attribute">location</span> /proxy/ &#123;
+        <span class="hljs-attribute">root</span> /opt/nginx/html/app;
+        <span class="hljs-attribute">index</span> proxy.html;
+    &#125;
+&#125;</code></pre></div>
+
+<p>在另一个nginx上配置反向代理：</p>
+<div class="code-wrapper"><pre><code class="hljs nginx"><span class="hljs-attribute">upstream</span> upstreamName &#123;
+    <span class="hljs-attribute">server</span> ip:port weight <span class="hljs-number">3</span> max_conns=<span class="hljs-number">1000</span> fail_timeout=<span class="hljs-number">10s</span> max_fails=<span class="hljs-number">3</span>;
+    <span class="hljs-attribute">keepalive</span> <span class="hljs-number">32</span>;
+    <span class="hljs-attribute">keepalive_requests</span> <span class="hljs-number">80</span>;
+    <span class="hljs-attribute">keepalive_time_out</span> <span class="hljs-number">20s</span>;
+&#125;
+
+<span class="hljs-section">server</span> &#123;
+    <span class="hljs-attribute">listen</span> <span class="hljs-number">80</span>;
+    <span class="hljs-attribute">server_name</span> name;
+    
+    <span class="hljs-comment"># 史前巨坑，在 location 路径存在时（如：/ali），spring boot 2.6.1 会显示 url 错误，报错为：存在两条下划线（如：//security/..），若 location 为 / 时正常运行，除此之外，如果 Spring Boot 没有 指定 mvc context，也无法正常运行。</span>
+    <span class="hljs-attribute">location</span> /path &#123;
+        <span class="hljs-attribute">proxy_pass</span> http://upstreamName/;
+    &#125;   
+&#125;</code></pre></div>
+
+<p>proxy_pass 加不加 / 的区别</p>
+<p>加 / 会自动去掉 location 中的 path，然后上传到上游服务器。不加，则 path 原封不动，上传到上游服务器。 </p>
+<h3 id="proxy-request-buffering"><a href="#proxy-request-buffering" class="headerlink" title="proxy_request_buffering"></a>proxy_request_buffering</h3><p>作用域：http、server、location</p>
+<p>默认值：on</p>
+<p>nignx 开启缓冲区，用于缓存请求体，等待接收请求发送完毕再发送至 Application Server，能减少上游服务器的并发量。</p>
+<p>除此之外，开启缓冲区还能减少磁盘 IO</p>
+<h3 id="client-max-body-size"><a href="#client-max-body-size" class="headerlink" title="client_max_body_size"></a>client_max_body_size</h3><p>作用域：http、server、location</p>
+<p>默认值：1M</p>
+<p>根据 Content-Length 判断，大于该参数则返回 412 Response，如果小于，则存储到内存中。</p>
+<h3 id="client-body-buffer-size"><a href="#client-body-buffer-size" class="headerlink" title="client_body_buffer_size"></a>client_body_buffer_size</h3><p>作用域：http、server、location</p>
+<p>默认值：8k | 16k </p>
+<h3 id="client-body-in-single-buffer"><a href="#client-body-in-single-buffer" class="headerlink" title="client_body_in_single_buffer"></a>client_body_in_single_buffer</h3><p>作用域：http、server、location</p>
+<p>默认值：off</p>
+<p>让请求体在内存中尽量按照顺序存储，减少读取开销。</p>
+<p><strong>还有许多有用的指令，待以后补充……</strong></p>
+<h2 id="HTTP请求更改"><a href="#HTTP请求更改" class="headerlink" title="HTTP请求更改"></a>HTTP请求更改</h2><h3 id="状态行"><a href="#状态行" class="headerlink" title="状态行"></a>状态行</h3><p>proxy_method</p>
+<p>proxy_http_version</p>
+<h3 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a>请求头</h3><p>proxy_set_header</p>
+<p>默认：</p>
+<p>proxy_set_header Host $proxy_host</p>
+<p>proxy_set_header Connection close</p>
+<p>proxy_pass_request_header</p>
+<p>默认：on</p>
+<h3 id="请求体"><a href="#请求体" class="headerlink" title="请求体"></a>请求体</h3><p>proxy_set_body</p>
+<p>proxy_pass_request_body</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Nginx/">Nginx</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Nginx/">Nginx</a>
+                    
+                  </div>
+                
+              </div>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/11/08/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%80%9F%E8%A7%88%E5%A4%8D%E4%B9%A0/">
+                        <span class="hidden-mobile">Git常用命令速览复习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <script type="text/javascript">
+    Fluid.utils.lazyComments('comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'RoOtZwY/RoOtZwY.github.io');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
