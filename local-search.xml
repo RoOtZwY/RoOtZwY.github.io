@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>Redis 基本数据结构（未完成）</title>
+    <link href="/2022/02/09/Redis-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%88%E6%9C%AA%E5%AE%8C%E6%88%90%EF%BC%89/"/>
+    <url>/2022/02/09/Redis-%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%88%E6%9C%AA%E5%AE%8C%E6%88%90%EF%BC%89/</url>
+    
+    <content type="html"><![CDATA[<p>回顾 Redis 底层的几种基本数据结构。</p><span id="more"></span><h2 id="简单动态字符串（Simple-Dynamic-String-SDS）"><a href="#简单动态字符串（Simple-Dynamic-String-SDS）" class="headerlink" title="简单动态字符串（Simple Dynamic String, SDS）"></a>简单动态字符串（Simple Dynamic String, SDS）</h2><p>Redis 自己封装的一种字符串操作抽象类型，能实现快捷的字符串修改和节省空间。</p><p>应用范围：所有涉及到字符串修改的操作，如：string、key、AOF 等</p><h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sdshdr</span> &#123;</span>    <span class="hljs-comment">// 记录字符串长度，让查询字符串长度的时间复杂度为 O(1)</span>  <span class="hljs-keyword">int</span> len;  <span class="hljs-comment">// 记录数组中未使用字节的数量</span>  <span class="hljs-comment">// 确保在操作时很容易就能检测到缓冲区溢出的情况</span>  <span class="hljs-keyword">int</span> <span class="hljs-built_in">free</span>;  <span class="hljs-comment">// char 类型的字节数组，用于保存字符串</span>  <span class="hljs-comment">// 减少内存再分配的次数，减少系统调用，增加性能</span>  <span class="hljs-keyword">char</span> buf[];  &#125;</code></pre></div><p>SDS 遵循 C 的字符串规范，结尾的<code>\0</code>不会被算进总长度中。</p><p>注意，<code>len</code> + <code>free</code>不等于总的长度，因为<code>free</code>在记录空闲长度时，不会记录<code>\0</code>。</p><h3 id="SDS-空间拓展规则"><a href="#SDS-空间拓展规则" class="headerlink" title="SDS 空间拓展规则"></a>SDS 空间拓展规则</h3><ol><li>SDS 在更新字符串时发现空间不足时，会进行一次扩容</li><li>如果 buf 数组中，字符串长度小于 1MB 时，在执行空间拓展时，会分配与字符串长度相同的空间，即，在分配完成后，字符串的长度为：len + free + 1 = len * 2 + 1</li><li>如果 buf 数组中，字符串长度大于等于 1MB 时，在执行空间拓展时，会分配 1MB 的空间，即，在分配完成后，字符串的长度为：len + free + 1 = len + 1MB + 1</li></ol><h3 id="空间惰性释放"><a href="#空间惰性释放" class="headerlink" title="空间惰性释放"></a>空间惰性释放</h3><p>在删除字符串中的字符时，SDS 不会立即进行内存重分配。</p><p>与此同时，SDS 也提供了相应的 API，可以让我们在有需要时释放空间。</p><h3 id="二进制存储"><a href="#二进制存储" class="headerlink" title="二进制存储"></a>二进制存储</h3><p>所有的SDS API 都以二进制的形式来存储数据，因此，SDS 字符串能保存一系列二进制数据。</p><h2 id="链表（List）"><a href="#链表（List）" class="headerlink" title="链表（List）"></a>链表（List）</h2><p>Redis 双向链表实现。</p><p>应用范围：list、慢查询等</p><h3 id="结构-1"><a href="#结构-1" class="headerlink" title="结构"></a>结构</h3><div class="code-wrapper"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">listNode</span> &#123;</span>    <span class="hljs-comment">// 前置节点</span>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">listNode</span> *<span class="hljs-title">prev</span>;</span>  <span class="hljs-comment">// 后置节点</span>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">listNode</span> *<span class="hljs-title">next</span>;</span>  <span class="hljs-comment">// 节点值</span>  <span class="hljs-keyword">void</span> *value;  &#125; listNode;<span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">list</span> &#123;</span>    listNode *head;    listNode *tail;    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> len;  &#125; <span class="hljs-built_in">list</span>;</code></pre></div><h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><p>双向链表、无环、头尾指针、记录长度、值多态</p><h2 id="字典（Dictionary）"><a href="#字典（Dictionary）" class="headerlink" title="字典（Dictionary）"></a>字典（Dictionary）</h2><p>使用 Hash 表作为底层实现的字典。</p><p>应用范围：数据库、hash、set 等</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Redis</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Redis</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>秒杀系统项目总结</title>
     <link href="/2022/01/30/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"/>
     <url>/2022/01/30/%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/</url>
